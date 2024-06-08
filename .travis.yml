@@ -4,13 +4,21 @@ services:
 language: generic
 
 before_install: 
-  - docker build -t prashant/react-test -f ./client/Dockerfile.dev ./client --progress plain
+  - docker build -t ppsrivastava/react-test -f ./client/Dockerfile.dev ./client --progress plain
 
 script: 
-  - docker run -e CI=true prashant/react-test npm test
+  - docker run -e CI=true ppsrivastava/react-test npm test
 
 after_success: 
-  - docker build -t prashant/multi-client ./client --progress plain
-  - docker build -t prashant/multi-server ./server --progress plain
-  - docker build -t prashant/multi-worker ./worker --progress plain
-  - docker build -t prashant/multi-nginx ./nginx --progress plain
+  - docker build -t ppsrivastava/multi-client ./client --progress plain
+  - docker build -t ppsrivastava/multi-server ./server --progress plain
+  - docker build -t ppsrivastava/multi-worker ./worker --progress plain
+  - docker build -t ppsrivastava/multi-nginx ./nginx --progress plain
+
+# Login to Docker CLI first (docker login - CMD)
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+- docker push ppsrivastava/multi-client
+- docker push ppsrivastava/multi-server
+- docker push ppsrivastava/multi-worker
+- docker push ppsrivastava/multi-nginx
