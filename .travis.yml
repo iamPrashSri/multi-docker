@@ -1,0 +1,16 @@
+sudo: required
+services:
+  - docker
+language: generic
+
+before_install: 
+  - docker build -t prashant/react-test -f ./client/Dockerfile.dev ./client --progress plain
+
+script: 
+  - docker run -e CI=true prashant/react-test npm test
+
+after_success: 
+  - docker build -t prashant/multi-client ./client --progress plain
+  - docker build -t prashant/multi-server ./server --progress plain
+  - docker build -t prashant/multi-worker ./worker --progress plain
+  - docker build -t prashant/multi-nginx ./nginx --progress plain
