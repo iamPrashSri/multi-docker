@@ -21,3 +21,15 @@ after_success:
   - docker push ppsrivastava/multi-server
   - docker push ppsrivastava/multi-worker
   - docker push ppsrivastava/multi-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: multi-docker
+  env: Multi-docker-env
+  bucket_name: elasticbeanstalk-us-east-2-471112754900
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
